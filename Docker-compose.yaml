@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=MultiChat
+    volumes:
+      - /var/lib/mongoDB
+      - ./mongod.conf: /etc/mongod.conf
+    command: mongod -f /etc/mongod.conf

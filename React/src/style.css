@@ -1,0 +1,44 @@
+.ChatDisplay{
+background-color: grey;
+display: flex;
+max-width:800px;
+flex-direction: column;
+overflow-y: scroll ;
+height: 600px;
+}
+
+.Chat{
+  display: flex;
+  flex-direction: row;
+}
+
+.ChatList{
+  max-width: 500px;
+  margin:0px;
+}
+.ChatSection{
+  width:fill;
+}
+.ChatListBox{
+  height: 50px;
+}
+.Message{
+  background-color: skyblue;
+  width: fit-content;
+  height: fit-content;
+  max-width: 75%;
+  border-radius: 15px;
+  margin: 1px 10px 1px 10px;
+  padding:2px 10px 2px 10px;
+  text-align: left;
+}
+
+.Self {
+  align-self: flex-end;
+  background-color: lime;
+}
+
+.Name{
+  background-color: transparent;
+  padding: 5px 13px 0 13px;
+}
