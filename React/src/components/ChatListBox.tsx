@@ -7,7 +7,7 @@ export default function ChatListBox({
   isActive,
   client,
 }: ChatListBoxProps) {
-  const [firstMessage, setFirstMessage] = useState<Message>();
+  const [firstMessage, setFirstMessage] = useState<Message | null>();
   const [seen, setSeen] = useState<boolean>();
 
   const color = isActive ? 'red' : 'black';
@@ -15,7 +15,11 @@ export default function ChatListBox({
   async function getFirstMessage(chatID: string): Promise<Message[]> {
     try {
       const response = await fetch(`http://localhost:8080/chat/${chatID}/0/1`);
-      if (!response.ok) return Promise.reject('invalid');
+      if (!response.ok) {
+        setFirstMessage(null);
+        return 
+        // return Promise.reject('no first message');
+      }
       const data: Message[] = await response.json();
       setFirstMessage(data[0]);
       return data;
