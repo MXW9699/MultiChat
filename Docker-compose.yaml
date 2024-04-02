@@ -10,6 +10,12 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=admin
       - MONGO_INITDB_DATABASE=MultiChat
     volumes:
-      - /var/lib/mongoDB
-      - ./mongod.conf: /etc/mongod.conf
-    command: mongod -f /etc/mongod.conf
+      - type: volume
+        target: /var/lib/mongoDB
+      - type: bind
+        source: ./mongod.conf
+        target: /etc/mongod.conf
+      - type: bind
+        source: ./MultichatKey
+        target: /etc/MultichatKey
+    command: mongod -f /etc/mongod.conf --auth --bind_ip_all 
