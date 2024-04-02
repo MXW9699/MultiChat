@@ -1,10 +1,8 @@
-package main.java.com.multichat.getuserservice.models.ResponseModels;
+package com.multichat.getuserservice.models.ResponseModels;
 
 import java.util.List;
 
 public class ChatResponse {
-
-  public class ChatResponse {
     private String ChatID;
     private List<String> Users;
 
@@ -31,4 +29,3 @@ public class ChatResponse {
 
   }
 
-}

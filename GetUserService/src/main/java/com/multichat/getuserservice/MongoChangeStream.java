@@ -1,4 +1,7 @@
-package main.java.com.multichat.getuserservice;
+package com.multichat.getuserservice;
+
+import com.multichat.getuserservice.models.Chat;
+import com.multichat.getuserservice.models.ResponseModels.ChatResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
