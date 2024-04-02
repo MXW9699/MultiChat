@@ -15,9 +15,19 @@ public class Chat {
   private List<Message> messages;
 
   // constructor to create a new chat
-  public Chat(List<String> users) {
-    this.users = users;
+  public Chat(){
+    this.users = new ArrayList<String>();
     this.messages = new ArrayList<Message>();
+  }
+
+  public Chat(List<String> users) {
+  this.users = users;
+  this.messages = new ArrayList<Message>();
+  }
+
+  public Chat(List<String> users, List<Message> message) {
+    this.users = users;
+    this.messages = message;
   }
 
   public String get_id() {

@@ -20,14 +20,13 @@ export default function App() {
   const stompClient = useRef<CompatClient | null>(null);
   const searchRef = useRef<RefType>(null);
 
-  const subscribeSelf = useCallback(() => {
-    setConnected(true);
-    stompClient.current.subscribe(`/topic/user/${userID}`, (message) => {
-      console.log(message.body);
-      console.log(activeChat);
-      setChatList((prev) => [...prev, message.body]);
-    });
-  }, [userID]);
+  // const subscribeSelf = useCallback(() => {
+  //   stompClient.current.subscribe(`/topic/user/${userID}`, (message) => {
+  //     console.log(message.body);
+  //     console.log(activeChat);
+  //     setChatList((prev) => [...prev, message.body]);
+  //   });
+  // }, [userID, activeChat]);
 
   const WSURL = 'ws://localhost:8081/ws';
   const BASE_URL = 'http://localhost:8080';
@@ -62,37 +61,41 @@ export default function App() {
 
   async function newChatHandler(text: string) {
     const names = searchRef.current.getSearch();
+    const newText = new TextMessage(userID, text, '');
+    console.log(newText);
     try {
       const memberList = [userID, ...names];
       //add chat to database
       const response = await fetch(`${BASE_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ names: memberList }),
+        body: JSON.stringify({ names: memberList, firstText: newText }),
       });
       if (!response.ok) {
         return Promise.reject('could not make new chat');
       }
       const newChat = await response.json();
       const newChatID = newChat._id;
-      const newText = new TextMessage(userID, text, newChatID);
-      // send message to new chat
-      await fetch(`${BASE_URL}/users/${userID}/chat/${newChatID}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: text,
-      });
-      stompClient.current.publish({
-        destination: `/app/chat/${newChatID}`,
-        headers: { newChat: 'true' },
-        body: JSON.stringify(newText),
-      });
-      setActiveChat(chatList.length);
+      // const newText = new TextMessage(userID, text, newChatID);
+      // // send message to new chat
+      // await fetch(`${BASE_URL}/users/${userID}/chat/${newChatID}`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: text,
+      // });
+      // stompClient.current.publish({
+      //   destination: `/app/chat/${newChatID}`,
+      //   headers: { newChat: 'true' },
+      //   body: JSON.stringify(newText),
+      // });
+      // setChatList(prev => [...prev, newChatID]);
+      // setActiveChat(chatList.length);
     } catch (e) {
       console.log(e);
     }
   }
 
+  //get initial information and connect to websocket
   useEffect(() => {
     if (userID == '') {
       const username = prompt('what is your name');
@@ -101,7 +104,9 @@ export default function App() {
       const client = Stomp.client(WSURL);
       stompClient.current = client;
     } else {
-      stompClient.current.connect({}, subscribeSelf);
+      stompClient.current.connect({}, () => {
+        setConnected(true);
+      });
       stompClient.current.activate();
     }
     return () => {
@@ -109,6 +114,22 @@ export default function App() {
     };
   }, [userID]);
 
+  //self subscribing to recieve new chats
+  useEffect(() => {
+    if (connected) {
+      const selfSubscribe = stompClient.current.subscribe(
+        `/topic/user/${userID}`,
+        (message) => {
+          console.log(activeChat);
+          setChatList((prev) => [...prev, message.body]);
+          if (activeChat == null) setActiveChat(chatList.length);
+        }
+      );
+      return () => {
+        selfSubscribe.unsubscribe();
+      };
+    }
+  }, [connected, chatList, activeChat, userID]);
   return (
     <div>
       welcome to the chatroom {userID}

@@ -1,5 +1,6 @@
 package com.multichat.getuserservice.Controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,13 +104,16 @@ public class UserController {
     }
   }
 
-  // create chat from list of users
+  // create chat from list of users and a message
   // add a chatID to the list of users
   @PostMapping("/chat")
-  public ResponseEntity<String> addChat(@RequestBody Names names) throws Exception {
+  public ResponseEntity<Chat> addChat(@RequestBody Names names) throws Exception {
     try {
+      System.out.println("recieved input: " + names.toString());
       List<String> users = names.getNames();
-      Chat chat = chatRepo.save(new Chat(users));
+      ArrayList<Message> firstText = new ArrayList<Message>();
+      firstText.add(names.getFirstText());
+      Chat chat = chatRepo.save(new Chat(users, firstText));
       String chatID = chat.get_id();
 
       for (String name : users) {
@@ -119,7 +123,7 @@ public class UserController {
         System.out.println(data.toString());
       }
       System.out.println("chat " + chatID + " added to users " + users.toString());
-      return ResponseEntity.ok(chatID);
+      return ResponseEntity.ok(chat);
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

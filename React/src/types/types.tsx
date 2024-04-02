@@ -18,7 +18,7 @@ export class TextMessage implements Message {
   constructor(username: string, message: string, chatID: string) {
     this.content = message;
     this.username = username;
-    this.chatID = chatID;
+    this.chatID = chatID?? "";
   }
 }
 

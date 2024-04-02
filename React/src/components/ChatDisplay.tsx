@@ -30,7 +30,7 @@ export default function ChatDisplay({
   }
 
   useEffect(() => {
-    if (chatID == '') setMessages([]);
+    if (chatID == '' || !chatID) setMessages([]);
     else {
       getChatMessages();
       const subscription = client.current.subscribe(
@@ -55,7 +55,7 @@ export default function ChatDisplay({
   async function sendHandler(e: FormEvent) {
     e.preventDefault();
     if (text == '') return;
-    if (chatID == '') newChatHandler(text);
+    if (chatID == '' || !chatID) newChatHandler(text);
     else {
       const newText = new TextMessage(username, text, chatID);
       await fetch(`${BASE_URL}/users/${username}/chat/${chatID}`, {
