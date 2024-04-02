@@ -3,20 +3,10 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-
-// import java.util.ArrayList;
-// import java.util.List;
-
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
-// import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.socket.WebSocketSession;
-// import org.springframework.web.bind.annotation.PathVariable;
-// import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
@@ -24,8 +14,6 @@ public class WebSocketController {
 
   @Autowired
   SimpMessagingTemplate simpMessagingTemplate;
-  // private static final List<WebSocketSession> sessionIDs = new ArrayList<>();
-  // private final SimpMessagingTemplate messagingTemplate;
 
   @MessageMapping("/greetings")
   @SendTo("/topic/greetings")
