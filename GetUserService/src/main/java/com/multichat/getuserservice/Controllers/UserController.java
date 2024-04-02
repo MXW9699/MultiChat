@@ -118,7 +118,7 @@ public class UserController {
         System.out.println(data.toString());
       }
       System.out.println("chat " + chatID + " added to users " + users.toString());
-      return ResponseEntity.ok(chat);
+      return ResponseEntity.ok(chatID);
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
