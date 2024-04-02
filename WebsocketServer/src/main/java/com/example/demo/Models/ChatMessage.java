@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Models;
 
 public class ChatMessage {
   private String username;
@@ -15,11 +15,6 @@ public class ChatMessage {
     this.chatID = chatID;
   }
 
-  public ChatMessage(){
-    this.username = "jon";
-    this.content = "message";
-    this.chatID = "1";
-  }
 
   public void setUsername(String username) {
     this.username = username;
