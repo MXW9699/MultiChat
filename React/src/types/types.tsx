@@ -1,5 +1,4 @@
 import { RefObject } from 'react';
-import ChatListBox from '../components/ChatListBox';
 import { CompatClient } from '@stomp/stompjs';
 
 export interface ChatListProps {
@@ -29,7 +28,7 @@ export interface UserInfo {
 }
 
 export interface ChatListBoxProps {
-  chatID: string;
+  chatID?: string;
   isActive: boolean;
   client: RefObject<CompatClient>;
   onClickHandler: Function;
@@ -39,4 +38,22 @@ export interface ChatDisplayProps {
   chatID: string;
   username: string;
   client: RefObject<CompatClient>;
+  newChatHandler: Function;
+}
+
+export interface IndividualMessageProps {
+  message: Message;
+  isSelf: Boolean;
+  isSameSenderAsPrev: boolean;
+}
+
+export interface SearchBarProps {
+  options: string[];
+  // newChatHandler: Function;
+}
+
+// Define the type for the ref
+export interface RefType {
+  getSearch: () => string[]; // Define methods you want to expose
+  // Additional methods if needed
 }

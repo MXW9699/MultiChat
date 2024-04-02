@@ -1,47 +1,86 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
+import { forwardRef } from 'react';
+import { RefType, SearchBarProps } from '../types/types';
 
-export default function SearchBar({ options }: { options: string[] }) {
-  const [search, setSearch] = useState(['']);
-  const [nameOptions, setNameOptions] = useState(options);
-  const [tagIndex, setTagIndex] = useState(0);
-  const inputRef = useRef(null);
+const SearchBar = forwardRef<RefType, SearchBarProps>(function SearchBar(
+  { options },
+  ref
+) {
+  const [search, setSearch] = useState<string[]>(['']);
+  const [nameOptions, setNameOptions] = useState<string[]>(options);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [recommendationsOpen, setRecommendationsOpen] =
+    useState<Boolean>(false);
 
-  function updateSearch(e: any) {
+  useImperativeHandle(ref, () => ({
+    getSearch: () => search.toString().split(','),
+  }));
+
+  function updateSearch(e: ChangeEvent<HTMLInputElement>) {
     const searchArray = e.target.value.split(', ');
-    setNameOptions(
-      options.filter((text) =>
-        text
-          .toLowerCase()
-          .includes(searchArray[searchArray.length - 1].toLowerCase())
-      )
+    const last = searchArray[searchArray.length - 1];
+    const newOptions = options.filter(
+      (text) =>
+        !searchArray.includes(text) &&
+        text.toLowerCase().includes(last.toLowerCase())
     );
+    setNameOptions(newOptions);
     setSearch(searchArray);
   }
 
-  useEffect(() => {
-    window.addEventListener('keydown', (e) => {
-      if (e.key == 'Tab' && nameOptions[0] && inputRef.current) {
-        e.preventDefault()
+  function tabAutoFill(e: KeyboardEvent) {
+    if (e.key == 'Tab' && document.activeElement == inputRef.current) {
+      e.preventDefault();
+      if (nameOptions.length) {
         const temp = [...search];
         temp[temp.length - 1] = nameOptions[0];
-        inputRef.current.value = temp.toString();
-        // inputRef.current.select()
-        // setSearch(temp);
+        inputRef.current.value = temp.join(', ');
       }
-      console.log(search);
-    });
-    return () =>
-      window.removeEventListener('keydown', (e) => {
-        console.log(e);
-      });
-  });
+    }
+  }
+
+  function showRecomendations() {
+    document.activeElement == inputRef.current
+      ? setRecommendationsOpen(true)
+      : setRecommendationsOpen(false);
+  }
+
+  function selectName(name: string) {
+    const temp = [...search];
+    temp[temp.length - 1] = name;
+    inputRef.current.value = temp.join(', ');
+    setSearch(temp);
+    inputRef.current.focus();
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', tabAutoFill);
+    window.addEventListener('click', showRecomendations);
+    return () => {
+      window.removeEventListener('keydown', tabAutoFill);
+      window.removeEventListener('click', showRecomendations);
+    };
+  }, [nameOptions, search]);
 
   return (
     <div>
       <input onChange={updateSearch} ref={inputRef} />
-      {nameOptions.map((el) => (
-        <div>{el}</div>
-      ))}
+      <div className="recommendedNamesContainer">
+        {recommendationsOpen &&
+          nameOptions.map((el) => (
+            <div className="recommendedNames" onClick={() => selectName(el)}>
+              {el}
+            </div>
+          ))}
+      </div>
     </div>
   );
-}
+});
+
+export default SearchBar;
