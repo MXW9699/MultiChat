@@ -1,4 +1,4 @@
-package com.multichat.getuserservice.getuserservice;
+package com.multichat.getuserservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @SpringBootApplication
 @EnableMongoRepositories
-public class GetuserserviceApplication {
+public class GetUserServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GetuserserviceApplication.class, args);
+		SpringApplication.run(GetUserServiceApplication.class, args);
 	}
 }

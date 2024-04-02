@@ -1,4 +1,4 @@
-package com.multichat.getuserservice.getuserservice.models;
+package com.multichat.getuserservice.models;
 
 import java.util.List;
 import java.util.ArrayList;

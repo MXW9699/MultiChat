@@ -10,6 +10,7 @@ import com.multichat.getuserservice.Repos.UserRepository;
 import com.multichat.getuserservice.models.Chat;
 import com.multichat.getuserservice.models.Message;
 import com.multichat.getuserservice.models.User;
+import com.multichat.getuserservice.models.ResponseModels.Names;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -105,9 +106,9 @@ public class UserController {
   // create chat from list of users
   // add a chatID to the list of users
   @PostMapping("/chat")
-  public ResponseEntity<String> addChat(@RequestBody List<String> users) throws Exception {
+  public ResponseEntity<String> addChat(@RequestBody Names names) throws Exception {
     try {
-      // List<String> users = requestBody.getUsers();
+      List<String> users = names.getNames();
       Chat chat = chatRepo.save(new Chat(users));
       String chatID = chat.get_id();
 
@@ -118,7 +119,7 @@ public class UserController {
         System.out.println(data.toString());
       }
       System.out.println("chat " + chatID + " added to users " + users.toString());
-      return ResponseEntity.ok(chat);
+      return ResponseEntity.ok(chatID);
     } catch (Exception e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

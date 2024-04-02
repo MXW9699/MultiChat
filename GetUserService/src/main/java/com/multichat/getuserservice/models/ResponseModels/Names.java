@@ -1,9 +1,8 @@
-package com.multichat.getuserservice.models;
+package com.multichat.getuserservice.models.ResponseModels;
 
 import java.util.List;
 
 public class Names {
-  public class Names {
 
   List<String> names;
   
@@ -17,4 +16,3 @@ public class Names {
   }
 }
   
-}

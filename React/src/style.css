@@ -1,35 +1,35 @@
-.ChatDisplay{
-background-color: grey;
-display: flex;
-max-width:800px;
-flex-direction: column;
-overflow-y: scroll ;
-height: 600px;
+.ChatDisplay {
+  background-color: grey;
+  display: flex;
+  max-width: 800px;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 600px;
 }
 
-.Chat{
+.Chat {
   display: flex;
   flex-direction: row;
 }
 
-.ChatList{
+.ChatList {
   max-width: 500px;
-  margin:0px;
+  margin: 0px;
 }
-.ChatSection{
-  width:fill;
+.ChatSection {
+  width: fill;
 }
-.ChatListBox{
+.ChatListBox {
   height: 50px;
 }
-.Message{
+.Message {
   background-color: skyblue;
   width: fit-content;
   height: fit-content;
   max-width: 75%;
   border-radius: 15px;
   margin: 1px 10px 1px 10px;
-  padding:2px 10px 2px 10px;
+  padding: 2px 10px 2px 10px;
   text-align: left;
 }
 
@@ -38,7 +38,19 @@ height: 600px;
   background-color: lime;
 }
 
-.Name{
+.Name {
   background-color: transparent;
   padding: 5px 13px 0 13px;
+}
+
+.recommendedNamesContainer{
+  position:absolute;
+  width: 100px;
+}
+.recommendedNames {
+  background-color: azure;
+}
+
+.recommendedNames:hover {
+  background-color: aqua;
 }

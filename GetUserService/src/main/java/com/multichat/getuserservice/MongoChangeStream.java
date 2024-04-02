@@ -1,6 +1,8 @@
-package main.java.com.multichat.getuserservice;
+package com.multichat.getuserservice;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.multichat.getuserservice.models.Chat;
+import com.multichat.getuserservice.models.ResponseModels.ChatResponse;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.ChangeStreamEvent;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -13,9 +15,7 @@ import java.net.http.HttpClient;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpResponse;
-import java.util.List;
 import java.net.http.HttpRequest;
-import java.net.http.HttpHeaders;
 
 @Configuration
 public class MongoChangeStream {
